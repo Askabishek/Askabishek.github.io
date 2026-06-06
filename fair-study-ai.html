@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair Study AI - Your AI Learning Assistant</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10,10,15,0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,212,255,0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: #00d4ff; }
+
+        .nav-btn {
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            color: #fff !important;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold !important;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px 60px;
+            background: radial-gradient(ellipse at center, rgba(0,212,255,0.05) 0%, transparent 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(123,47,247,0.1) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.3);
+            color: #00d4ff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            color: #fff;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 30px rgba(0,212,255,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 50px rgba(0,212,255,0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #00d4ff;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            border: 1px solid rgba(0,212,255,0.5);
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0,212,255,0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 40px 20px;
+            background: rgba(255,255,255,0.02);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat p { color: #888; font-size: 0.9rem; }
+
+        /* Features */
+        .features {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 10px;
+        }
+
+        .section-title p { color: #888; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover::before { transform: scaleX(1); }
+
+        .feature-card:hover {
+            border-color: rgba(0,212,255,0.3);
+            transform: translateY(-5px);
+            background: rgba(0,212,255,0.05);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .feature-card p { color: #888; line-height: 1.7; font-size: 0.95rem; }
+
+        /* Languages */
+        .languages {
+            padding: 60px 20px;
+            text-align: center;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .lang-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .lang-badge {
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.3);
+            color: #00d4ff;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        /* SDG */
+        .sdg {
+            padding: 80px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .sdg-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .sdg p { color: #aaa; line-height: 1.8; margin-top: 20px; }
+
+        /* Tech Stack */
+        .tech {
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.02);
+            text-align: center;
+        }
+
+        .tech-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .tech-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+            transform: translateY(-3px);
+        }
+
+        /* CTA */
+        .cta {
+            padding: 100px 20px;
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(123,47,247,0.1) 0%, transparent 70%);
+        }
+
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+        }
+
+        .cta p { color: #aaa; margin-bottom: 40px; font-size: 1.1rem; }
+
+        /* Footer */
+        footer {
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        footer a { color: #00d4ff; text-decoration: none; }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            nav { padding: 15px 20px; }
+            .nav-links { display: none; }
+            .stats { gap: 25px; }
+            .hero-btns { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">Fair Study AI</div>
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#languages">Languages</a>
+        <a href="#tech">Tech Stack</a>
+        <a href="https://fair-study-ai-2.onrender.com" target="_blank" class="nav-btn">Try Now →</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <div>
+        <div class="badge">🎓 Built for Google Solution Challenge 2026</div>
+        <h1>Learn Smarter with<br><span class="gradient-text">Fair Study AI</span></h1>
+        <p>Your unbiased AI-powered learning assistant. Get personalized explanations, smart notes, quizzes and doubt solving — in your own language.</p>
+        <div class="hero-btns">
+            <a href="https://fair-study-ai-2.onrender.com" target="_blank" class="btn-primary">🚀 Try it Free</a>
+            <a href="https://github.com/Askabishek/fair-study-ai" target="_blank" class="btn-secondary">⭐ GitHub</a>
+        </div>
+    </div>
+</section>
+
+<div class="stats">
+    <div class="stat"><h3>5+</h3><p>AI Features</p></div>
+    <div class="stat"><h3>3</h3><p>Languages</p></div>
+    <div class="stat"><h3>100%</h3><p>Free to Use</p></div>
+    <div class="stat"><h3>24/7</h3><p>Available</p></div>
+</div>
+
+<section class="features" id="features">
+    <div class="section-title">
+        <h2>Powerful <span class="gradient-text">Features</span></h2>
+        <p>Everything a student needs in one place</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">💡</div>
+            <h3>Concept Explainer</h3>
+            <p>Get any topic explained at Beginner, Intermediate or Advanced level. Personalized to your understanding!</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📝</div>
+            <h3>Smart Note Generator</h3>
+            <p>Generate structured, concise study notes for any subject instantly. Save hours of note-taking!</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>Doubt Solver</h3>
+            <p>Ask any academic doubt and get clear, accurate answers with examples. Available 24/7!</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Quiz Generator</h3>
+            <p>Generate custom MCQ quizzes for any topic with adjustable number of questions. Test yourself!</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📄</div>
+            <h3>Text Summarizer</h3>
+            <p>Paste any long text and get a clear, concise summary instantly. Perfect for research papers!</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Lightning Fast</h3>
+            <p>Powered by Llama AI via Groq — get responses in seconds. No waiting, no delays!</p>
+        </div>
+    </div>
+</section>
+
+<section class="languages" id="languages">
+    <div class="section-title">
+        <h2>Learn in Your <span class="gradient-text">Own Language</span></h2>
+        <p>Breaking language barriers in education</p>
+    </div>
+    <div class="lang-badges">
+        <span class="lang-badge">🇬🇧 English</span>
+        <span class="lang-badge">🇮🇳 Tamil</span>
+        <span class="lang-badge">🇮🇳 Hindi</span>
+    </div>
+</section>
+
+<section class="sdg">
+    <div class="section-title">
+        <h2>Built for <span class="gradient-text">Global Impact</span></h2>
+    </div>
+    <div class="sdg-badge">🌍 UN SDG Goal 4 — Quality Education</div>
+    <p>Every student deserves equal access to quality learning — regardless of background, language or resources. Fair Study AI is our contribution to making education truly fair and accessible for all.</p>
+</section>
+
+<section class="tech" id="tech">
+    <div class="section-title">
+        <h2>Built with <span class="gradient-text">Modern Tech</span></h2>
+    </div>
+    <div class="tech-grid">
+        <span class="tech-item">🐍 Python</span>
+        <span class="tech-item">🎨 Streamlit</span>
+        <span class="tech-item">🤖 Groq API</span>
+        <span class="tech-item">🦙 Llama AI</span>
+        <span class="tech-item">☁️ Render</span>
+        <span class="tech-item">🐙 GitHub</span>
+    </div>
+</section>
+
+<section class="cta">
+    <h2>Ready to Study <span class="gradient-text">Smarter?</span></h2>
+    <p>Join students worldwide using Fair Study AI — completely free!</p>
+    <a href="https://fair-study-ai-2.onrender.com" target="_blank" class="btn-primary">🚀 Launch Fair Study AI</a>
+</section>
+
+<footer>
+    <p>Built with ❤️ by <a href="https://www.linkedin.com/in/abishek-v-917713376" target="_blank">Abishek V</a> | 
+    <a href="https://github.com/Askabishek/fair-study-ai" target="_blank">GitHub</a> | 
+    Google Solution Challenge 2026</p>
+</footer>
+
+</body>
+</html>
